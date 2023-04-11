@@ -35,13 +35,10 @@ class UsersController extends AppController
     } else {
       $group_options = $this->Group->find('list', [
         'recursive' => -1,
-        'fields' => ['Group.id', 'Group.name']
+        'fields' => ['Group.id', 'Group.name'],
+        'limit' => 4
       ]);
-      $role_options = $this->Role->find('list', [
-        'recursive' => -1,
-        'fields' => ['Role.id', 'Role.title']
-      ]);
-      $this->set(compact('group_options', 'role_options'));
+      $this->set('group_options',$group_options);
     }
   }
   public function main()
@@ -76,10 +73,15 @@ class UsersController extends AppController
   public function login()
   {
     if ($this->request->is('post')) {
-      if ($this->Auth->login()) {
-        return $this->redirect($this->Auth->redirectUrl());
-      }
-      $this->Auth->Flash(__('sorry something went wrong'));
+      $temp=$this->User->find('all',[
+        'recursive' => -1,
+        'fields' =>['username','password'],
+        'conditions' => [ 'User.username' => [$this->request->data['User']['username'] ], ['password' => $this->request->data['User']['password'] ]]
+      ]);
+      if(!empty($temp))
+        return $this->redirect(['action' => 'main']);
+      else
+        $this->Flash->error(__('your username or password is wrong'));
     }
   }
 }
