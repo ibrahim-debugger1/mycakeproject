@@ -1,11 +1,5 @@
 <h1>Blog posts</h1>
-<br>
-<?php echo $this->Html->link(
-    'Add Post',
-    array('controller' => 'posts', 'action' => 'add')
-); ?>
-<br>
-<br>
+<?php echo $this->Html->link('Add Post',['controller' => 'posts', 'action' => 'add']); ?>
 <table>
     <tr>
         <th>Id</th>
@@ -17,11 +11,20 @@
     <?php foreach ($posts as $post) : ?>
         <tr>
             <td><?php echo $post['Post']['id']; ?></td>
-            <td><?php echo $this->html->link($post['Post']['title'], ['controller' => 'posts', 'action' => 'view', $post['Post']['id']]); ?> </td>
-            <td><?php echo $this->Html->link('Edit',array('action' => 'edit', $post['Post']['id']));
-                ?>
+            <td>
+                <?php echo $this->Html->link(
+                    $post['Post']['title'],
+                    array('controller' => 'posts', 'action' => 'view', $post['Post']['id'])
+                ); ?>
             </td>
-            <td><?php echo $post['Post']['created_time']; ?></td>
+            <td>
+                <?php echo $this->Html->link(
+                    'edit',
+                    array('controller' => 'posts', 'action' => 'edit', $post['Post']['id'])
+                ); ?>
+            </td>
+            <td><?php echo $post['Post']['created']; ?></td>
         </tr>
     <?php endforeach; ?>
+    <?php unset($post); ?>
 </table>

@@ -33,6 +33,26 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller
 {
-   
-    
+    public $helpers = array('Js');
+    public $components = [
+        'Flash',
+        'Auth' => [
+            'loginRedirect' => [
+                'controller' => 'posts',
+                'action' => 'index'
+            ],
+            'logoutRedirect' => [
+                'controller' => 'users',
+                'action' => 'login'
+            ],
+            'authenticate' => [
+                'Form' => [
+                    'passwordHasher' => 'Blowfish'
+                ]
+            ]
+        ]
+    ];
+    public function beforeFilter(){
+       // $this->Auth->allow('index');
+    }
 }
